@@ -11,16 +11,13 @@ function User() {
   const pageVisited = pageNumber * userPerPage;
 
   const questions = useOutletContext();
-  const queId = useParams();
+  const { userId } = useParams();
   const [users, setUsers] = useState([]);
   const [sort, setSort] = useState();
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    const storeRef = query(
-      collection(db, "questions"),
-      orderBy("created", "asc")
-    );
+    const storeRef = query(collection(db, "users"), orderBy("created", "asc"));
     onSnapshot(storeRef, (snapshot) => {
       setUsers(
         snapshot.docs.map((doc) => ({
@@ -31,14 +28,17 @@ function User() {
     });
   }, []);
 
-  const username = users.find((que) => {
-    return que.id === queId.user;
-  })?.data.user;
+  const join = users.find((u) => {
+    return u?.data.username === userId;
+  })?.data.created;
 
-  const que = questions.filter((que) => {
-    return que?.data.user === username;
+  const joinDate = new Date(join?.seconds * 1000).toDateString();
+
+  const userData = questions.filter((que) => {
+    return que?.data.user === userId;
   });
-  const pageCount = Math.ceil(questions.length / userPerPage);
+
+  const pageCount = Math.ceil(userData.length / userPerPage);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
@@ -47,9 +47,9 @@ function User() {
     !sort ? setSort(true) : setSort(false);
   };
   if (sort === true) {
-    questions.sort((a, b) => a.data.id - b.data.id);
+    userData.sort((a, b) => a.data.id - b.data.id);
   } else if (sort === false) {
-    questions.sort((a, b) => b.data.id - a.data.id);
+    userData.sort((a, b) => b.data.id - a.data.id);
   }
 
   return (
@@ -70,7 +70,7 @@ function User() {
         </div>
 
         <div className="profile-table-container">
-          <h3>{`${username}'s Profile`}</h3>
+          <h3>{`${userId}'s Profile`}</h3>
           <table className="profile-table">
             <thead>
               <tr>
@@ -82,10 +82,10 @@ function User() {
             </thead>
             <tbody>
               <tr>
-                <td>{que.length}</td>
+                <td>{userData.length}</td>
                 <td>0</td>
                 <td>Standard User</td>
-                <td> Friday, Nov 25th, 2022</td>
+                <td> {`${joinDate.slice(0, 2)},${joinDate.slice(3)}`}</td>
               </tr>
             </tbody>
           </table>
@@ -108,7 +108,7 @@ function User() {
                 </tr>
               </thead>
               <tbody>
-                {que
+                {userData
                   .slice(pageVisited, pageVisited + userPerPage)
                   .filter((item) => {
                     return item?.data.question.includes(searchValue);
@@ -127,14 +127,13 @@ function User() {
               </tbody>
             </table>
           </div>
-          {/* ------------------------------------------- */}
         </div>
         <div className="unver">
           <h3>Unverified Questions</h3>
           <div className="ver-que">No Questions Found</div>
         </div>
       </div>
-      <div>
+      <div className="paginate">
         <ReactPaginate
           previousLabel={`Previous`}
           nextLabel={`Next`}

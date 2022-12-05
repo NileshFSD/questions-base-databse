@@ -325,6 +325,16 @@ h3 {
   color: rgb(216, 236, 216);
   text-decoration: none;
 }
+
+.active > .page-link,
+.page-link.active {
+  background-color: rgb(7, 69, 7) !important;
+}
+
+.paginate {
+  margin: 2rem 0rem;
+  font-weight: 700;
+}
 /* -------------------------Footer------------------------------------ */
 footer {
   width: 100%;

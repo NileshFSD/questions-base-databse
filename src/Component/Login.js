@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../Firebase/Firebase-config";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const emailRef = useRef();
@@ -40,12 +41,11 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
 
       setTimeout(() => {
-        alert("Login Successfully");
-        // dispatch(hideValue());
+        toast.success("Login Successfully");
         navigate("/profile");
       }, 1000);
     } catch (error) {
-      alert("invalid username/password");
+      toast.warning("invalid username/password");
     }
 
     emailRef.current.value = "";
@@ -88,6 +88,7 @@ const Login = () => {
           <button className="register-btn">Register</button>
         </Link>
       </form>
+      <ToastContainer position="top-left" />
     </div>
   );
 };

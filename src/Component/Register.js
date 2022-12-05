@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
 import { auth, db } from "../Firebase/Firebase-config";
 import {
   addDoc,
@@ -44,11 +45,11 @@ const Register = () => {
 
     try {
       if (checkUsername.includes(username)) {
-        alert("Please choose another username");
+        toast.info("Please choose another username");
       } else if (checkEmail.includes(email)) {
-        alert("This email is already registered, please enter another email");
+        toast.info("This email is already registered, please enter another email");
       } else if (password !== confirmPassword) {
-        alert("Password does not match, please re-Entre the same password");
+        toast.info("Password does not match, please re-Entre the same password");
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
         await addDoc(collection(db, "users"), {
@@ -58,12 +59,12 @@ const Register = () => {
         });
 
         setTimeout(() => {
-          alert("Registration done, we are redirecting you to on user page");
+          toast.success("Registration done, we are redirecting you to on user page");
           navigate("/profile");
         }, 1000);
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
@@ -126,6 +127,7 @@ const Register = () => {
           </Link>
         </div>
       </form>
+      <ToastContainer position="top-left" />
     </div>
   );
 };

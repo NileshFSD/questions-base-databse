@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { category } from "../Data/Add-que";
 import { type } from "../Data/Add-que";
 import { difficulty } from "../Data/Add-que";
+import { ToastContainer, toast } from "react-toastify";
 import { auth, db } from "../Firebase/Firebase-config";
 
 const Add = () => {
@@ -71,11 +72,11 @@ const Add = () => {
           user: username,
         });
 
-        alert("Question Added");
+        toast.success("Question Added");
 
         e.target.reset();
       } catch (error) {
-        alert(error);
+        toast.error(error);
       }
     } else {
       try {
@@ -89,17 +90,18 @@ const Add = () => {
           id: id,
           user: username,
         });
-        alert("Question Added");
+        toast.success("Question Added");
 
         e.target.reset();
       } catch (error) {
-        alert(error);
+        toast.error(error);
       }
     }
   };
 
   return (
     <div className="add-que">
+      <ToastContainer position="top-left" />
       <h4>Add new question</h4>
       <form className="add-form" onSubmit={handleSubmit}>
         <div className="add-form-select">

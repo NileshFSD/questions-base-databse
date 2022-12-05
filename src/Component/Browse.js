@@ -1,34 +1,16 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaSearch, FaSort } from "react-icons/fa";
-import { db } from "../Firebase/Firebase-config";
 import ReactPaginate from "react-paginate";
-import { Link, Outlet } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 const Browse = () => {
-  const [questions, setQuestions] = useState([]);
+  const questions = useOutletContext();
   const [search, setSearch] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const userPerPage = 15;
   const pageVisited = pageNumber * userPerPage;
   const [sort, setSort] = useState();
-
-  useEffect(() => {
-    const storeRef = query(
-      collection(db, "questions"),
-      orderBy("created", "asc")
-    );
-
-    onSnapshot(storeRef, (snapshot) => {
-      setQuestions(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
-  }, []);
 
   const pageCount = Math.ceil(questions.length / userPerPage);
   const changePage = ({ selected }) => {
@@ -47,7 +29,6 @@ const Browse = () => {
 
   return (
     <div className="browse-container">
-      <Outlet context={questions} />
       <div className="browse">
         <div>
           <input
@@ -89,14 +70,23 @@ const Browse = () => {
               {questions
                 .slice(pageVisited, pageVisited + userPerPage)
                 .filter((que) => {
-                  if (search === "question") {
-                    return que?.data.question.includes(searchValue);
-                  } else if (search === "user") {
-                    return que?.data.user === searchValue;
-                  } else if (search === "category") {
-                    return que?.data.category === searchValue;
-                  } else if (searchValue === "") {
-                    return que;
+                  switch (search) {
+                    case "question":
+                      return que?.data.question
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase());
+                    case "user":
+                      return (
+                        que?.data.user.toLowerCase() ===
+                        searchValue.toLowerCase()
+                      );
+                    case "category":
+                      return (
+                        que?.data.category.toLowerCase() ===
+                        searchValue.toLowerCase()
+                      );
+                    default:
+                      return que;
                   }
                 })
                 .map((que) => {
@@ -110,7 +100,7 @@ const Browse = () => {
 
                       <td>
                         {" "}
-                        <Link className="link" to={`/browse/${que?.id}`}>
+                        <Link className="link" to={`/${que?.data.user}`}>
                           {que?.data.user}{" "}
                         </Link>
                       </td>
@@ -121,7 +111,7 @@ const Browse = () => {
           </table>
         </div>
       </div>
-      <div>
+      <div className="paginate">
         <ReactPaginate
           previousLabel={`Previous`}
           nextLabel={`Next`}

@@ -6,7 +6,6 @@ import { FaSearch } from "react-icons/fa";
 function Profile() {
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState();
-  // const navigate = useNavigate();
 
   useEffect(() => {
     const storeRef = query(collection(db, "users"), orderBy("created", "asc"));

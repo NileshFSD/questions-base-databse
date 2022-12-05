@@ -7,6 +7,7 @@ import { FiLogIn } from "react-icons/fi";
 import { auth, db } from "../Firebase/Firebase-config";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { signOut } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
 
 const Navbar = () => {
   const [loggedInUser, setLoggedInUser] = useState();
@@ -36,7 +37,7 @@ const Navbar = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     await signOut(auth);
-    alert("SignOut Done");
+    toast.success("SignOut Done");
     navigate("/");
   };
 
@@ -123,6 +124,7 @@ const Navbar = () => {
           )}
         </ul>
       </div>
+      <ToastContainer position="top-left" />
     </nav>
   );
 };
