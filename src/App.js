@@ -10,12 +10,11 @@ import Profile from "./Component/Profile";
 import Browse from "./Component/Browse";
 import Add from "./Component/Add";
 import User from "./Component/User";
-// import UserContext from "./Context/UserContext";
+import Error from "./Component/Error";
 
 function App() {
   return (
     <div className="App">
-      {/* <UserContext> */}
       <Router>
         <Navbar />
         <Routes>
@@ -27,10 +26,10 @@ function App() {
             <Route path=":user" element={<User />} />
           </Route>
           <Route path="/add" element={<Add />} />
+          <Route path="*" element={<Error />} />
         </Routes>
         <Footer />
       </Router>
-      {/* </UserContext> */}
     </div>
   );
 }
