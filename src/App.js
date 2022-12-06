@@ -13,26 +13,29 @@ import Add from "./Component/Add";
 import User from "./Component/User";
 import Error from "./Component/Error";
 import Data from "./Component/Data";
+import UserContext from "./Context/UserContext";
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route element={<Data />}>
-            <Route index path="/browse" element={<Browse />} />
-            <Route path=":userId" element={<User />} />
-          </Route>
-          <Route path="/add" element={<Add />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-        <Footer />
-      </Router>
+      <UserContext>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route element={<Data />}>
+              <Route index path="/browse" element={<Browse />} />
+              <Route path=":userId" element={<User />} />
+            </Route>
+            <Route path="/add" element={<Add />} />
+            <Route path="*" element={<Error />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </UserContext>
     </div>
   );
 }

@@ -93,12 +93,17 @@ const Navbar = () => {
                     className="dropdown-menu"
                     aria-labelledby="dropdownMenu2"
                   >
-                    <button className="dropdown-item" type="button">
-                      Action
-                    </button>
-                    <button className="dropdown-item" type="button">
-                      Another action
-                    </button>
+                    <Link to="/" className="link">
+                      <button className="dropdown-item" type="button">
+                        Home
+                      </button>
+                    </Link>
+
+                    <Link to="/profile" className="link">
+                      <button className="dropdown-item" type="button">
+                        Profile
+                      </button>
+                    </Link>
                     <button className="dropdown-item" type="button">
                       Change Password
                     </button>

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { db } from "../Firebase/Firebase-config";
+import { useState } from "react";
 import { FaSearch, FaSort } from "react-icons/fa";
 import { useOutletContext, useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { useContext } from "react";
+import CreateContext from "../Context/CreateContext";
 
 function User() {
   const [pageNumber, setPageNumber] = useState(0);
@@ -12,21 +12,9 @@ function User() {
 
   const questions = useOutletContext();
   const { userId } = useParams();
-  const [users, setUsers] = useState([]);
+  const users = useContext(CreateContext);
   const [sort, setSort] = useState();
   const [searchValue, setSearchValue] = useState("");
-
-  useEffect(() => {
-    const storeRef = query(collection(db, "users"), orderBy("created", "asc"));
-    onSnapshot(storeRef, (snapshot) => {
-      setUsers(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
-  }, []);
 
   const join = users.find((u) => {
     return u?.data.username === userId;
@@ -85,7 +73,7 @@ function User() {
                 <td>{userData.length}</td>
                 <td>0</td>
                 <td>Standard User</td>
-                <td> {`${joinDate.slice(0, 2)},${joinDate.slice(3)}`}</td>
+                <td> {`${joinDate.slice(0, 3)},${joinDate.slice(3)}`}</td>
               </tr>
             </tbody>
           </table>

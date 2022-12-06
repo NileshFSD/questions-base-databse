@@ -29,6 +29,12 @@ ul {
   color: white !important;
 }
 
+.navbar-toggler {
+  position: absolute;
+  right: 2%;
+  top: 8%;
+}
+
 .nav-icons {
   font-size: 1rem;
   margin: 0.1rem 0.1rem 0.3rem 0rem;
@@ -37,12 +43,19 @@ ul {
 /* ------------------------Home-------------------------------- */
 .home-container {
   height: 90vh;
-  background: url("https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
   background-size: cover;
   background-position: 100%;
   backdrop-filter: blur(80%);
   background-color: rgb(7, 69, 7);
   padding: 2rem;
+  background: rgb(118, 196, 118);
+  background: linear-gradient(
+    304deg,
+    rgba(118, 196, 118, 1) 0%,
+    rgba(88, 207, 81, 1) 35%,
+    rgba(152, 236, 148, 1) 50%,
+    rgba(102, 213, 132, 0.9864320728291317) 99%
+  );
 }
 
 .home {
@@ -59,6 +72,15 @@ ul {
   background-color: rgb(7, 69, 7);
   border-radius: 2rem;
   font-size: 2rem;
+}
+
+.que {
+  height: 20rem;
+}
+
+.que img {
+  height: 110%;
+  float: right;
 }
 
 /* -----------------------------Register--------------------------------- */

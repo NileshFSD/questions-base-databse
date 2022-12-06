@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
+import que from "../Asset/Que.png";
 
 const Home = () => {
   return (
@@ -8,6 +9,10 @@ const Home = () => {
       <div className="home">
         <div>
           <h2> Ask any question & thoughts </h2>
+        </div>
+        <div className="que">
+          {" "}
+          <img src={que} alt="question-symbol" />
         </div>
         <div>
           <Link className="link" to="/register">

@@ -1,35 +1,24 @@
-import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { auth, db } from "../Firebase/Firebase-config";
+import { useContext, useEffect, useState } from "react";
+import { auth } from "../Firebase/Firebase-config";
 import { FaSearch } from "react-icons/fa";
+import CreateContext from "../Context/CreateContext";
 
 function Profile() {
-  const [users, setUsers] = useState([]);
+  const users = useContext(CreateContext);
+
   const [loggedInUser, setLoggedInUser] = useState();
 
   useEffect(() => {
-    const storeRef = query(collection(db, "users"), orderBy("created", "asc"));
-    onSnapshot(storeRef, (snapshot) => {
-      setUsers(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
-  }, []);
-
-  useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      setLoggedInUser(user);
+      setLoggedInUser(user?.email);
     });
   }, []);
 
-  const userDetails = users.find((user) => {
-    return user?.data.email === loggedInUser?.email;
-  });
+  const date = users.find((user) => {
+    return user?.data.email === loggedInUser;
+  })?.data.created;
 
-  console.log(userDetails?.data.username);
+  const joinDate = new Date(date?.seconds * 1000).toDateString();
 
   return (
     <div className="profile">
@@ -57,7 +46,7 @@ function Profile() {
                 <td>0</td>
                 <td>0</td>
                 <td>Standard User</td>
-                <td> Friday, Nov 25th, 2022</td>
+                <td> {`${joinDate.slice(0, 3)},${joinDate.slice(3)}`}</td>
               </tr>
             </tbody>
           </table>

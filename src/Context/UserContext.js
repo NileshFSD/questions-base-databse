@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
-import { auth } from "../Firebase/Firebase-config";
+import { db } from "../Firebase/Firebase-config";
 import CreateContext from "../Context/CreateContext";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 const UserContext = (props) => {
   const [users, setUsers] = useState();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      setUsers(user);
+    const storeRef = query(collection(db, "users"), orderBy("created", "asc"));
+    onSnapshot(storeRef, (snapshot) => {
+      setUsers(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
     });
   }, []);
 
-  const user = users?.email;
-
   return (
-    <CreateContext.Provider value={user}>
+    <CreateContext.Provider value={users}>
       {props.children}
     </CreateContext.Provider>
   );
